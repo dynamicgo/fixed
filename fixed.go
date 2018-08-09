@@ -61,8 +61,6 @@ func FromFloat(value *big.Float, decimals int) *Number {
 	if decimals > 0 {
 		val := new(big.Float).Mul(value, new(big.Float).SetInt(val2))
 
-		println("===", val.String())
-
 		number.value, _ = val.Int64()
 	} else {
 		val := new(big.Float).Quo(value, new(big.Float).SetInt(val2))
