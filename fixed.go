@@ -9,7 +9,7 @@ import (
 
 // Number fixed number
 type Number struct {
-	value    int64
+	value    *big.Int
 	decimals int
 }
 
@@ -26,19 +26,24 @@ func hexBytes(value string) ([]byte, error) {
 // New .
 func New(value int64, decimals int) *Number {
 	return &Number{
-		value:    value,
+		value:    big.NewInt(value),
 		decimals: decimals,
 	}
 }
 
 // Value .
 func (number *Number) Value() int64 {
+	return number.value.Int64()
+}
+
+// ValueBigInteger .
+func (number *Number) ValueBigInteger() *big.Int {
 	return number.value
 }
 
 // HexValue return value as hex string
 func (number *Number) HexValue() string {
-	return "0x" + hex.EncodeToString(big.NewInt(number.value).Bytes())
+	return "0x" + hex.EncodeToString(number.value.Bytes())
 }
 
 // Decimals .
@@ -61,11 +66,11 @@ func FromFloat(value *big.Float, decimals int) *Number {
 	if decimals > 0 {
 		val := new(big.Float).Mul(value, new(big.Float).SetInt(val2))
 
-		number.value, _ = val.Int64()
+		number.value, _ = val.Int(nil)
 	} else {
 		val := new(big.Float).Quo(value, new(big.Float).SetInt(val2))
 
-		number.value, _ = val.Int64()
+		number.value, _ = val.Int(nil)
 	}
 
 	return number
@@ -82,14 +87,23 @@ func FromHex(value string, decimals int) (*Number, error) {
 	bigValue := new(big.Int).SetBytes(valueBytes)
 
 	return &Number{
-		value:    bigValue.Int64(),
+		value:    bigValue,
 		decimals: decimals,
 	}, nil
 }
 
+// FromBigInteger .
+func FromBigInteger(value *big.Int, decimals int) *Number {
+
+	return &Number{
+		value:    value,
+		decimals: decimals,
+	}
+}
+
 // Float convert to big.Float
 func (number *Number) Float() *big.Float {
-	bigValue := big.NewInt(number.value)
+	bigValue := number.value
 
 	var val2 = big.NewInt(1)
 
