@@ -122,3 +122,27 @@ func (number *Number) Float() *big.Float {
 func (number *Number) Compare(to *Number) int {
 	return new(big.Float).Sub(number.Float(), to.Float()).Sign()
 }
+
+// Sub .
+func (number *Number) Sub(to *Number) *Number {
+	if number.decimals != to.decimals {
+		panic("sub operate number must has the same decimals")
+	}
+
+	return &Number{
+		value:    new(big.Int).Sub(number.value, to.value),
+		decimals: number.decimals,
+	}
+}
+
+// Add .
+func (number *Number) Add(to *Number) *Number {
+	if number.decimals != to.decimals {
+		panic("sub operate number must has the same decimals")
+	}
+
+	return &Number{
+		value:    new(big.Int).Add(number.value, to.value),
+		decimals: number.decimals,
+	}
+}
