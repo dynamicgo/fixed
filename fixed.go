@@ -45,7 +45,7 @@ func (number *Number) ValueBigInteger() *big.Int {
 // HexValue return value as hex string
 func (number *Number) HexValue() string {
 
-	return fmt.Sprintf("%0x", number.value)
+	return fmt.Sprintf("%x", number.value)
 
 	// return "0x" + hex.EncodeToString(number.value.Bytes())
 }

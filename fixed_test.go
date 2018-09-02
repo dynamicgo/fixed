@@ -16,4 +16,8 @@ func TestSign(t *testing.T) {
 	require.True(t, number.Compare(FromFloat(big.NewFloat(0), 0)) < 0)
 
 	require.Equal(t, number.HexValue(), "-100000000")
+
+	number = FromFloat(big.NewFloat(-0.111), 2)
+
+	require.True(t, number.Compare(FromFloat(big.NewFloat(0), 0)) < 0)
 }
