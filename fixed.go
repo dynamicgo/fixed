@@ -2,6 +2,7 @@ package fixed
 
 import (
 	"encoding/hex"
+	"fmt"
 	"math"
 	"math/big"
 	"strings"
@@ -43,7 +44,10 @@ func (number *Number) ValueBigInteger() *big.Int {
 
 // HexValue return value as hex string
 func (number *Number) HexValue() string {
-	return "0x" + hex.EncodeToString(number.value.Bytes())
+
+	return fmt.Sprintf("%0x", number.value)
+
+	// return "0x" + hex.EncodeToString(number.value.Bytes())
 }
 
 // Decimals .
@@ -78,13 +82,18 @@ func FromFloat(value *big.Float, decimals int) *Number {
 
 // FromHex decode number from hex string
 func FromHex(value string, decimals int) (*Number, error) {
-	valueBytes, err := hexBytes(value)
+
+	valueBytes, err := hexBytes(strings.TrimPrefix(value, "-"))
 
 	if err != nil {
 		return nil, err
 	}
 
 	bigValue := new(big.Int).SetBytes(valueBytes)
+
+	if strings.HasPrefix(value, "-") {
+		bigValue = new(big.Int).Sub(big.NewInt(0), bigValue)
+	}
 
 	return &Number{
 		value:    bigValue,
