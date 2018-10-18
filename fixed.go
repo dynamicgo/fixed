@@ -105,8 +105,8 @@ func FromHex(value string, decimals int) (*Number, error) {
 	}, nil
 }
 
-// FromBigInteger .
-func FromBigInteger(value *big.Int, decimals int) *Number {
+// NewWithBigint .
+func NewWithBigint(value *big.Int, decimals int) *Number {
 
 	return &Number{
 		value:    value,
