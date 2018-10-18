@@ -32,6 +32,10 @@ func New(value int64, decimals int) *Number {
 	}
 }
 
+func (number *Number) String() string {
+	return fmt.Sprintf("fixed[%d,%d]", number.value, number.decimals)
+}
+
 // Value .
 func (number *Number) Value() int64 {
 	return number.value.Int64()
