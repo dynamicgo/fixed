@@ -159,3 +159,8 @@ func (number *Number) Add(to *Number) *Number {
 		decimals: number.decimals,
 	}
 }
+
+// Sign get nubmer sign
+func (number *Number) Sign() int {
+	return number.value.Sign()
+}
